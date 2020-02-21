@@ -27,11 +27,23 @@ struct User
     int id;
 };
 
-int addUser(vector <Object> &uzytkownicy, int idperson, int idUser){
+void loadingFileAllusers (vector <Object> &uzytkownik);
+void addUser(vector <Object> &userList, int idUser)
+{
+    vector <Object> fulllist;
+    vector <Object> :: iterator itr;
+    loadingFileAllusers(fulllist);
+    
+    int idperson = 0;
+    for (itr = fulllist.begin(); itr != fulllist.end(); itr ++)
+    {
+        idperson = itr -> id;
+    }
     
     system("clear");
     cout << "Dodaj znajomego do książki adresowej.\n";
     Object obiekt;
+   
     
     obiekt.id = idperson + 1;
     obiekt.idUser = idUser;
@@ -54,7 +66,7 @@ int addUser(vector <Object> &uzytkownicy, int idperson, int idUser){
     cin >> obiekt.email;
     
     
-    uzytkownicy.push_back(obiekt);
+    userList.push_back(obiekt);
    
     ofstream plik;
     plik.open("ksiazka.txt", ios::out | ios::app);
@@ -78,9 +90,7 @@ int addUser(vector <Object> &uzytkownicy, int idperson, int idUser){
     
     cout << "Osoba zostala dodana." << endl;
     usleep(2000000);
-    idperson ++;
-    
-    return idperson;
+
 }
 
 void showListUser(const Object & obiekt)
@@ -118,36 +128,34 @@ void pauze()
     } while (cin.get() != '\n');
 }
 
-
-void loadingFileAllusers (vector <Object> &uzytkownik);
-void deleteUser(int x, vector<Object> &uzytkownik)
+void deleteUser(int x, vector<Object> &userList)
 {
     char choice;
-    vector <Object>::iterator itr = uzytkownik.begin();
-
+    vector <Object>::iterator itr = userList.begin();
+    
     vector <Object> allusers;
     loadingFileAllusers(allusers);
     vector<Object>::iterator it;
    
-    for (it = allusers.begin(); it != allusers.end(); it++)
-    {
-        for(itr = uzytkownik.begin(); itr != uzytkownik.end(); itr ++)
-        {
-            if ((it -> id == itr -> id) && (itr->id == x))
+            for (it = allusers.begin(); it != allusers.end(); it++)
             {
-                cout << "Czy na pewno chcesz usunąć użytkownika?" << itr->name << " " << itr->lastname << "\nWciśni t aby zatwierdzic. \n" << endl;
-                cin >> choice;
-                  
-                  if(choice == 't')
-                  {
-                        uzytkownik.erase(itr);
-                        itr --;
-                        allusers.erase(it);
-                        it --;
-                  }
+                for(itr = userList.begin(); itr != userList.end(); itr ++)
+                {
+                    if ((it -> id == itr -> id) && (itr->id == x))
+                    {
+                        cout << "Czy na pewno chcesz usunąć użytkownika?" << itr->name << " " << itr->lastname << "\nWciśni t aby zatwierdzic. \n" << endl;
+                        cin >> choice;
+                          
+                          if(choice == 't')
+                          {
+                                userList.erase(itr);
+                                itr --;
+                                allusers.erase(it);
+                                it --;
+                          }
+                    }
+                }
             }
-        }
-    }
     ofstream plik;
     plik.open("ksiazka.txt", ios::out | ios::trunc);
     
@@ -369,11 +377,10 @@ void editUser(vector<Object> &uzytkownik, int x)
 }
  
 
-int loadingFile(vector <Object> &uzytkownik, int idZalogowanegoUzytkownika)
+void loadingFile(vector <Object> &usersList, int idZalogowanegoUzytkownika)
 {
     Object obiekt;
     string linia, wyraz;
-    int users = 0;
     fstream plik;
     plik.open("ksiazka.txt", ios::in);
     while(getline(plik, linia))
@@ -429,100 +436,23 @@ int loadingFile(vector <Object> &uzytkownik, int idZalogowanegoUzytkownika)
         }
         
         if(idZalogowanegoUzytkownika == obiekt.idUser)
-        uzytkownik.push_back(obiekt);
+        usersList.push_back(obiekt);
         
         wyraz = "";
-        users++;
-        
+       
     }
     plik.close();
     
-    return users;
+    
 }
 
-void saveFileUser(vector <User> &uzytkownik)
-{
-    vector<User>:: iterator itr;
-    ofstream plik;
-    plik.open("users.txt", ios::out | ios::in | ios::trunc);
-    
-    if (plik.good()){
-        for(itr = uzytkownik.begin(); itr != uzytkownik.end(); itr ++)
-        {
-            plik << itr-> id << "|"
-            << itr -> login << "|"
-            << itr -> password << "|" << endl;
-        }
-        plik.close();
-        
-    }
-    else{
-        cout << "Nie mozna otworzyc pliku: ksiazka.txt" << endl;
-    }
-}
-
-int loadingFileUser(vector <User> &uzytkownik, int users)
-{
-    User obiekt;
-    string linia, wyraz;
-    fstream plik;
-    
-    plik.open("users.txt", ios::in);
-    while(getline(plik, linia))
-    {
-        int punkt = 0;
-        int liczba = 0;
-        for(int i = 0; i < linia.length(); i++)
-        {
-            
-            if (linia[i] == '|')
-            {
-                punkt ++;
-                if(punkt == 1)
-                {
-                    liczba = stringToInt(wyraz);
-                    obiekt.id = liczba;
-                }
-                else if (punkt == 2)
-                {
-                    obiekt.login = wyraz;
-                }
-                else if (punkt == 3)
-                {
-                    obiekt.password = wyraz;
-                }
-                wyraz = "";
-                i++;
-                
-            }
-            wyraz += linia[i];
-        }
-        uzytkownik.push_back(obiekt);
-        wyraz = "";
-        users++;
-    }
-    plik.close();
-    
-    return users;
-}
-
-void makeFileToSave()
-{
-    fstream plik;
-    plik.open("ksiazka.txt", ios::out | ios::app);
-    plik.close();
-    
-    fstream plikUser;
-    plikUser.open("users.txt", ios::out | ios::app);
-    plikUser.close();
-}
-
-void zmienHaslo (int idZalogowanegoUzytkownika, vector<User> &allusers)
+void saveFileUser(vector <User> &registeredUsers);
+void zmienHaslo (int idZalogowanegoUzytkownika, vector<User> &registeredUsers)
 {
     string edycja;
     vector<User>::iterator itr;
     
-    for (itr = allusers.begin(); itr != allusers.end(); itr++)
+    for (itr = registeredUsers.begin(); itr != registeredUsers.end(); itr++)
     {
         if (itr -> id == idZalogowanegoUzytkownika)
         {
@@ -533,21 +463,21 @@ void zmienHaslo (int idZalogowanegoUzytkownika, vector<User> &allusers)
         }
     }
     
-    saveFileUser(allusers);
+    saveFileUser(registeredUsers);
     
 }
 
-int mainMenu(vector <Object> &usersList, int idZalogowanegoUzytkownika, vector <User> &uzytkownicyZalogowani)
+int mainMenu(int idZalogowanegoUzytkownika, vector <User> &registeredUsers)
 {
    
+      vector <Object> usersList;
       string word;
       vector<Object>::iterator itr;
-      int quantityUsers = 0;
     
-      quantityUsers = loadingFile(usersList, idZalogowanegoUzytkownika);
+      loadingFile(usersList, idZalogowanegoUzytkownika);
      
       //system("clear");
-      while (true){
+      while (2){
           system("clear");
           cout << "Program - Książka adresowa \n\n";
           cout << "Wybierz opcje: \n";
@@ -568,9 +498,7 @@ int mainMenu(vector <Object> &usersList, int idZalogowanegoUzytkownika, vector <
           
           if (choice == '1')
           {
-             // quantityUsers = loadingFile(usersList, idZalogowanegoUzytkownika);
-              quantityUsers = addUser(usersList, quantityUsers, idZalogowanegoUzytkownika);
-              
+              addUser(usersList, idZalogowanegoUzytkownika);
           }
           else if (choice == '2')
           {
@@ -621,7 +549,7 @@ int mainMenu(vector <Object> &usersList, int idZalogowanegoUzytkownika, vector <
           }
           else if (choice == '7')
           {
-              zmienHaslo(idZalogowanegoUzytkownika, uzytkownicyZalogowani);
+              zmienHaslo(idZalogowanegoUzytkownika, registeredUsers);
               
           }
           else if (choice == '9')
@@ -631,20 +559,20 @@ int mainMenu(vector <Object> &usersList, int idZalogowanegoUzytkownika, vector <
 }
 
 
-int rejestracja (vector <User> &user, int iloscUzytkownikow)
+void rejestracja (vector <User> &registeredUsers)
 {
     User objekt;
     string login, haslo;
     cout << "Podaj nazwe uzytkownika: ";
     cin >> login;
     
-    vector<User>::iterator itr = user.begin();
-    while (itr != user.end())
+    vector<User>::iterator itr = registeredUsers.begin();
+    while (itr != registeredUsers.end())
     {
         if (itr->login == login)
         {
             cout << "Taki użytkownik istnieje \nWpisz inna nazwe uzytkownika: ";
-            itr = user.begin();
+            itr = registeredUsers.begin();
             cin >> login;
         }
        
@@ -654,20 +582,19 @@ int rejestracja (vector <User> &user, int iloscUzytkownikow)
     
     cout << "Podaj haslo: ";
     cin >> haslo;
+    int iloscUzytkownikow = (int)registeredUsers.size() + 1;
     
-    objekt.id = iloscUzytkownikow + 1;
+    objekt.id = iloscUzytkownikow;
     objekt.login = login;
     objekt.password = haslo;
-    user.push_back(objekt);
+    registeredUsers.push_back(objekt);
     
-    iloscUzytkownikow ++;
+   
     cout << "Uzytkownik został pomyslnie zarejestrowany." << endl;
     usleep(2000000);
-    
-    return iloscUzytkownikow;
 }
 
-int logowanie (vector <User> &user)
+int logowanie (vector <User> &registeredUsers)
 {
     int idUzytkownika = 0;
     string login, haslo;
@@ -675,8 +602,8 @@ int logowanie (vector <User> &user)
     cout << "Podaj login uzytkownika: ";
     cin >> login;
     
-    vector<User>::iterator itr = user.begin();
-    while (itr != user.end())
+    vector<User>::iterator itr = registeredUsers.begin();
+    while (itr != registeredUsers.end())
     {
          if (itr->login == login)
          {
@@ -702,6 +629,82 @@ int logowanie (vector <User> &user)
     return 0;
 }
 
+void loadingFileUser(vector <User> &registeredUsers)
+{
+    User obiekt;
+    string linia, wyraz;
+    fstream plik;
+    
+    plik.open("users.txt", ios::in);
+    while(getline(plik, linia))
+    {
+        int punkt = 0;
+        int liczba = 0;
+        for(int i = 0; i < linia.length(); i++)
+        {
+            
+            if (linia[i] == '|')
+            {
+                punkt ++;
+                if(punkt == 1)
+                {
+                    liczba = stringToInt(wyraz);
+                    obiekt.id = liczba;
+                }
+                else if (punkt == 2)
+                {
+                    obiekt.login = wyraz;
+                }
+                else if (punkt == 3)
+                {
+                    obiekt.password = wyraz;
+                }
+                wyraz = "";
+                i++;
+                
+            }
+            wyraz += linia[i];
+        }
+        registeredUsers.push_back(obiekt);
+        wyraz = "";
+        
+    }
+    plik.close();
+    
+}
+
+void saveFileUser(vector <User> &registeredUsers)
+{
+    vector<User>:: iterator itr;
+    ofstream plik;
+    plik.open("users.txt", ios::out | ios::in | ios::trunc);
+    
+    if (plik.good()){
+        for(itr = registeredUsers.begin(); itr != registeredUsers.end(); itr ++)
+        {
+            plik << itr-> id << "|"
+            << itr -> login << "|"
+            << itr -> password << "|" << endl;
+        }
+        plik.close();
+        
+    }
+    else{
+        cout << "Nie mozna otworzyc pliku: ksiazka.txt" << endl;
+    }
+}
+
+void makeFileToSave()
+{
+    fstream plik;
+    plik.open("ksiazka.txt", ios::out | ios::app);
+    plik.close();
+    
+    fstream plikUser;
+    plikUser.open("users.txt", ios::out | ios::app);
+    plikUser.close();
+}
+
 int main() {
         
     vector <Object> usersList;
@@ -709,9 +712,10 @@ int main() {
     
     vector <User> registeredUsers;
     int idZalogowanegoUrzytkownika = 0;
-    int iloscUzytkownikow = 0;
+   // int iloscUzytkownikow = 0;
     
-    iloscUzytkownikow = loadingFileUser(registeredUsers, iloscUzytkownikow);
+    loadingFileUser(registeredUsers);
+   // iloscUzytkownikow = (int)registeredUsers.size();
     
     char choice;
     
@@ -728,11 +732,11 @@ int main() {
         {
             idZalogowanegoUrzytkownika = logowanie(registeredUsers);
             if(idZalogowanegoUrzytkownika != 0)
-            mainMenu(usersList, idZalogowanegoUrzytkownika, registeredUsers);
+            mainMenu(idZalogowanegoUrzytkownika, registeredUsers);
         }
         else if (choice == '2')
         {
-           iloscUzytkownikow = rejestracja (registeredUsers, iloscUzytkownikow);
+           rejestracja (registeredUsers);
            saveFileUser(registeredUsers);
            
         }
