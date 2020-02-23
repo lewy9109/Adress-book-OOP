@@ -130,16 +130,17 @@ void pauze()
 
 void deleteUser(int x, vector<Object> &userList)
 {
+    int punkty = 0;
     char choice;
-    vector <Object>::iterator itr = userList.begin();
-    
+    vector <Object>::iterator itr;
+  
     vector <Object> allusers;
     loadingFileAllusers(allusers);
     vector<Object>::iterator it;
    
-            for (it = allusers.begin(); it != allusers.end(); it++)
+            for (it = userList.begin(); it != userList.end(); it++)
             {
-                for(itr = userList.begin(); itr != userList.end(); itr ++)
+                for(itr = allusers.begin(); itr != allusers.end(); itr ++)
                 {
                     if ((it -> id == itr -> id) && (itr->id == x))
                     {
@@ -148,43 +149,46 @@ void deleteUser(int x, vector<Object> &userList)
                           
                           if(choice == 't')
                           {
-                                userList.erase(itr);
-                                itr --;
-                                allusers.erase(it);
-                                it --;
-                              
-                                 ofstream plik;
-                                 plik.open("ksiazka.txt", ios::out | ios::trunc);
-                                 
-                                 if (plik.good()){
-                                     for(it = allusers.begin(); it != allusers.end(); it++)
-                                     {
-                                         plik << it-> id << "|"
-                                         << it -> idUser << "|"
-                                         << it -> name << "|"
-                                         << it -> lastname << "|"
-                                         << it -> adress << "|"
-                                         << it -> phone  << "|"
-                                         << it -> email << "|" << endl;
-                                     }
-                                     plik.close();
-                                     
-                                 }
-                                 else{
-                                 cout << "Nie mozna otworzyc pliku: ksiazka.txt" << endl;
-                                 }
+                              allusers.erase(itr);
+                              userList.erase(it);
+                              it --;
+                              itr --;
+                              punkty ++;
                           }
+                    
                     }
                 }
             }
-   
     
+    if (punkty == 1)
+    {
+         ofstream plik;
+         plik.open("ksiazka.txt", ios::out | ios::trunc);
+              
+         if (plik.good())
+         {
+             for(itr = allusers.begin(); itr != allusers.end(); itr ++)
+             {
+                 plik << itr-> id << "|"
+                     << itr -> idUser << "|"
+                     << itr -> name << "|"
+                     << itr -> lastname << "|"
+                     << itr -> adress << "|"
+                     << itr -> phone  << "|"
+                     << itr -> email << "|" << endl;
+             }
+             plik.close();
+                    
+         }
+             else
+             cout << "Nie mozna otworzyc pliku: ksiazka.txt" << endl;
+    }
+    punkty = 0;
 }
-void loadingFileAllusers (vector <Object> &uzytkownik)
+void loadingFileAllusers (vector <Object> &allUsers)
 {
     Object obiekt;
     string linia, wyraz;
-    int users = 0;
     fstream plik;
     plik.open("ksiazka.txt", ios::in);
     while(getline(plik, linia))
@@ -239,10 +243,9 @@ void loadingFileAllusers (vector <Object> &uzytkownik)
             wyraz += linia[i];
         }
         
-        uzytkownik.push_back(obiekt);
+        allUsers.push_back(obiekt);
         
         wyraz = "";
-        users++;
         
     }
     plik.close();
@@ -250,24 +253,21 @@ void loadingFileAllusers (vector <Object> &uzytkownik)
     
 }
 
-void editUser(vector<Object> &uzytkownik, int x)
+void editUser(vector<Object> &userList, int selectID)
 {
     vector<Object>:: iterator itr;
     string edycja;
     char choice;
-    
     vector <Object> allusers;
     loadingFileAllusers(allusers);
     vector<Object>::iterator it;
     
-    for(itr = uzytkownik.begin(); itr != uzytkownik.end(); itr ++)
+    for(itr = userList.begin(); itr != userList.end(); itr ++)
     {
-         
-       if(itr->id == x)
+       if(itr->id == selectID)
        {
            do
            {
-           
                cout << "Co chcesz edytowc u Pana/Pani : " << itr->name << " " << itr->lastname << endl;
                cout << "1. Imie \n";
                cout << "2. Nazwisko \n";
@@ -276,18 +276,15 @@ void editUser(vector<Object> &uzytkownik, int x)
                cout << "5. email \n";
                cout << "6. powrot do glownego menu \n";
                
-
                cin >> choice;
 
                if (choice == '1')
                {
-                   
                    itr->name.erase();
                    cout<< "Wprowadz imie:\n";
                    cin >> edycja;
                    transform(edycja.begin(), edycja.end(), edycja.begin(), :: toupper);
                    itr->name = edycja;
-                      
                }
                else if (choice == '2')
                {
@@ -296,8 +293,6 @@ void editUser(vector<Object> &uzytkownik, int x)
                    cin >> edycja;
                    transform(edycja.begin(), edycja.end(), edycja.begin(), :: toupper);
                    itr->lastname = edycja;
-                   
-                   
                }
                else if (choice == '3')
                {
@@ -305,8 +300,6 @@ void editUser(vector<Object> &uzytkownik, int x)
                    cout << "Wprowadz adres:\n";
                    cin >> edycja;
                    itr->adress = edycja;
-                   
-                   
                }
                else if (choice == '4')
                {
@@ -314,8 +307,6 @@ void editUser(vector<Object> &uzytkownik, int x)
                    cout << "Wprowadz telefon:\n";
                    cin >> edycja;
                    itr->phone = edycja;
-                   
-                
                }
                else if (choice == '5')
                {
@@ -326,65 +317,62 @@ void editUser(vector<Object> &uzytkownik, int x)
        
                }
                  
-               if(choice > 0 && choice < 6)
-               {
-                     fstream plik, plikTemp;
-                     plikTemp.open("ksiazka_tymczasowa.txt", ios::out | ios::app);
-                     plikTemp.close();
-                
-                    for (it = allusers.begin(); it != allusers.end(); it ++)
-                    {
-                        
-                        if (it ->id != itr->id)
-                        {
-                            plikTemp.open("ksiazka_tymczasowa.txt", ios::out | ios::app);
-                            if (plikTemp.good())
-                            {
-                                plikTemp << it-> id << "|"
-                                << it -> idUser << "|"
-                                << it -> name << "|"
-                                << it -> lastname << "|"
-                                << it -> adress << "|"
-                                << it -> phone  << "|"
-                                << it -> email << "|" << endl;
-                            }else cout << "Nie mozna otworzyc pliku: ksiazka.txt" << endl;
-                            plikTemp.close();
-                            
-                        }
-                        else if (itr->id == it ->id)
-                        {
-                            plikTemp.open("ksiazka_tymczasowa.txt", ios::out | ios::app);
-                            if (plikTemp.good())
-                            {
-                                plikTemp << itr -> id << "|"
-                                << itr -> idUser << "|"
-                                << itr -> name << "|"
-                                << itr -> lastname << "|"
-                                << itr -> adress << "|"
-                                << itr -> phone  << "|"
-                                << itr -> email << "|" << endl;
-                            }else cout << "Nie mozna otworzyc pliku: ksiazka.txt" << endl;
-                            plikTemp.close();
-                            
-                            remove("ksiazka.txt");
-                            rename("ksiazka_tymczasowa.txt", "ksiazka.txt");
-                        }
-                        
-                    }
-                        
-               }
             }while(choice != '6');
-           
-           
-              
-           
        }
-     
+    }
+    
+    for (itr = userList.begin(); itr != userList.end(); itr ++)
+    {
+        if (selectID == itr ->id)
+        {
+          fstream plik, plikTemp;
+          plikTemp.open("ksiazka_tymczasowa.txt", ios::out | ios::app);
+          plikTemp.close();
+       
+           for (it = allusers.begin(); it != allusers.end(); it ++)
+           {
+               if (it ->id != itr->id)
+               {
+                   plikTemp.open("ksiazka_tymczasowa.txt", ios::out | ios::app);
+                   if (plikTemp.good())
+                   {
+                       plikTemp << it-> id << "|"
+                       << it -> idUser << "|"
+                       << it -> name << "|"
+                       << it -> lastname << "|"
+                       << it -> adress << "|"
+                       << it -> phone  << "|"
+                       << it -> email << "|" << endl;
+                   }else cout << "Nie mozna otworzyc pliku: ksiazka.txt" << endl;
+                   plikTemp.close();
+                   
+               }
+               else if (it->id == itr ->id)
+               {
+                   plikTemp.open("ksiazka_tymczasowa.txt", ios::out | ios::app);
+                   if (plikTemp.good())
+                   {
+                       plikTemp << itr -> id << "|"
+                       << itr -> idUser << "|"
+                       << itr -> name << "|"
+                       << itr -> lastname << "|"
+                       << itr -> adress << "|"
+                       << itr -> phone  << "|"
+                       << itr -> email << "|" << endl;
+                   }else cout << "Nie mozna otworzyc pliku: ksiazka.txt" << endl;
+                   plikTemp.close();
+                   
+               }
+               
+           }
+            remove("ksiazka.txt");
+            rename("ksiazka_tymczasowa.txt", "ksiazka.txt");
+       }
+       
     }
 
 }
  
-
 void loadingFile(vector <Object> &usersList, int idZalogowanegoUzytkownika)
 {
     Object obiekt;
@@ -485,7 +473,7 @@ int mainMenu(int idZalogowanegoUzytkownika, vector <User> &registeredUsers)
       loadingFile(usersList, idZalogowanegoUzytkownika);
      
       //system("clear");
-      while (2){
+      while (true){
           system("clear");
           cout << "Program - Książka adresowa \n\n";
           cout << "Wybierz opcje: \n";
@@ -720,10 +708,8 @@ int main() {
     
     vector <User> registeredUsers;
     int idZalogowanegoUrzytkownika = 0;
-   // int iloscUzytkownikow = 0;
     
     loadingFileUser(registeredUsers);
-   // iloscUzytkownikow = (int)registeredUsers.size();
     
     char choice;
     
