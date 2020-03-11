@@ -23,6 +23,8 @@ class AdresatMenager
     Adresat podajDaneNowegoAdresata();
     PlikZAdresatami plikZAdresatami;
     void wyswietlDaneAdresata(Adresat adresat);
+    void wyswietlIloscWyszukanychAdresatow(int iloscAdresatow);
+
    
     
 public:
@@ -31,6 +33,7 @@ public:
     };
     void dodajAdresata();
     void wyswietlWszystkichAdresatow();
+    void wyszukajAdresatowPoImieniu();
     
 };
 

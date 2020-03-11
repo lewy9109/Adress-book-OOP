@@ -13,7 +13,7 @@ using namespace std;
 char wybierzOpcjeZMenuGlownego();
 char wybierzOpcjeZMenuUzytkownika();
 char wczytajZnak();
-int main() {
+int _main() {
  
     KsiazkaAdresowa ksiazkaAdresowa ("Uzytkownicy.txt", "Adresaci.txt");
    
@@ -47,12 +47,6 @@ int main() {
         else
         {
 
-            //if (adresaci.empty() == true)
-                // Pobieramy idOstatniegoAdresata, po to aby zoptymalizowac program.
-                // Dzieki temu, kiedy uztykwonik bedzie dodawal nowego adresata
-                // to nie bedziemy musieli jeszcze raz ustalac idOstatniegoAdresata
-           //     idOstatniegoAdresata = wczytajAdresatowZalogowanegoUzytkownikaZPliku(adresaci, idZalogowanegoUzytkownika);
-
             wybor = wybierzOpcjeZMenuUzytkownika();
 
             switch (wybor)
@@ -81,7 +75,6 @@ int main() {
                 break;
             case '8':
                     ksiazkaAdresowa.wylogowywanieUzytkownika();
-                    idZalogowanegoUzytkownika = 0;
                 break;
             }
         }
@@ -92,19 +85,18 @@ int main() {
     return 0;
 }
 
-/*
+
 #include "AdresatMenager.hpp"
 int main ()
 {
     
     AdresatMenager adresatMenager("Adresaci.txt", 1);
+    adresatMenager.wyszukajAdresatowPoImieniu();
     adresatMenager.dodajAdresata();
-    adresatMenager.wyswietlWszystkichAdresatow();
-
     return 0;
 
 }
-*/
+
  
 
 char wybierzOpcjeZMenuGlownego()

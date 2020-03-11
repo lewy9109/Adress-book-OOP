@@ -40,9 +40,14 @@ void KsiazkaAdresowa::dodajAdresata()
 {
     adresatMenager -> dodajAdresata();
 }
-void KsiazkaAdresowa:: wyswietlWszystkichAdresatow()
+void KsiazkaAdresowa::wyswietlWszystkichAdresatow()
 {
     adresatMenager -> wyswietlWszystkichAdresatow();
 }
+void KsiazkaAdresowa::wyszukajAdresatowPoImieniu()
+{
+    adresatMenager -> wyszukajAdresatowPoImieniu();
+}
+
 
 
