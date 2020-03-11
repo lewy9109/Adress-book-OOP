@@ -38,5 +38,6 @@ public:
     void wylogowywanieUzytkownika();
     void dodajAdresata();
     void wyszukajAdresatowPoImieniu();
+    void wyszukajAdresatowPoNazwisku();
 };
 #endif /* ksiazkaAdresowa_hpp */

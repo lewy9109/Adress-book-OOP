@@ -67,7 +67,7 @@ void AdresatMenager::wyswietlWszystkichAdresatow()
        {
            cout << endl << "Ksiazka adresowa jest pusta." << endl << endl;
        }
-    usleep(5000000);
+    usleep(3000000);
 }
 
 void AdresatMenager::wyswietlDaneAdresata(Adresat adresat)
@@ -110,6 +110,7 @@ void AdresatMenager::wyszukajAdresatowPoImieniu()
     }
     cout << endl;
     system("pause");
+    usleep(3000000);
 }
 
 void AdresatMenager::wyswietlIloscWyszukanychAdresatow(int iloscAdresatow)
@@ -118,4 +119,37 @@ void AdresatMenager::wyswietlIloscWyszukanychAdresatow(int iloscAdresatow)
         cout << endl << "W ksiazce adresowej nie ma adresatow z tymi danymi." << endl;
     else
         cout << endl << "Ilosc adresatow w ksiazce adresowej wynosi: " << iloscAdresatow << endl << endl;
+}
+
+void AdresatMenager::wyszukajAdresatowPoNazwisku()
+{
+    string nazwiskoPoszukiwanegoAdresata;
+    int iloscAdresatow = 0;
+    MetodyPomocnicze metodyPomocnicze;
+    system("cls");
+    if (!adresaci.empty())
+    {
+        cout << ">>> WYSZUKIWANIE ADRESATOW O NAZWISKU <<<" << endl << endl;
+
+        cout << "Wyszukaj adresatow o nazwisku: ";
+        nazwiskoPoszukiwanegoAdresata = metodyPomocnicze.wczytajLinie();
+        nazwiskoPoszukiwanegoAdresata = metodyPomocnicze.zamienPierwszaLitereNaDuzaAPozostaleNaMale(nazwiskoPoszukiwanegoAdresata);
+
+        for (vector <Adresat>::iterator itr = adresaci.begin(); itr != adresaci.end(); itr++)
+        {
+            if (itr -> pobierzNazwisko() == nazwiskoPoszukiwanegoAdresata)
+            {
+                wyswietlDaneAdresata(*itr);
+                iloscAdresatow++;
+            }
+        }
+         wyswietlIloscWyszukanychAdresatow(iloscAdresatow);
+    }
+    else
+    {
+        cout << endl << "Ksiazka adresowa jest pusta." << endl << endl;
+    }
+    cout << endl;
+    system("pause");
+    usleep(3000000);
 }

@@ -48,6 +48,11 @@ void KsiazkaAdresowa::wyszukajAdresatowPoImieniu()
 {
     adresatMenager -> wyszukajAdresatowPoImieniu();
 }
+void KsiazkaAdresowa::wyszukajAdresatowPoNazwisku()
+{
+    adresatMenager -> wyszukajAdresatowPoNazwisku();
+}
+
 
 
 

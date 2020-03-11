@@ -13,7 +13,7 @@ using namespace std;
 char wybierzOpcjeZMenuGlownego();
 char wybierzOpcjeZMenuUzytkownika();
 char wczytajZnak();
-int _main() {
+int main() {
  
     KsiazkaAdresowa ksiazkaAdresowa ("Uzytkownicy.txt", "Adresaci.txt");
    
@@ -55,10 +55,10 @@ int _main() {
                     ksiazkaAdresowa.dodajAdresata();
                 break;
             case '2':
-        //        wyszukajAdresatowPoImieniu(adresaci);
+                ksiazkaAdresowa.wyszukajAdresatowPoImieniu();
                 break;
             case '3':
-        //        wyszukajAdresatowPoNazwisku(adresaci);
+                ksiazkaAdresowa.wyszukajAdresatowPoNazwisku();
                 break;
             case '4':
                 ksiazkaAdresowa.wyswietlWszystkichAdresatow();
@@ -87,17 +87,15 @@ int _main() {
 
 
 #include "AdresatMenager.hpp"
-int main ()
+int _main ()
 {
     
     AdresatMenager adresatMenager("Adresaci.txt", 1);
-    adresatMenager.wyszukajAdresatowPoImieniu();
-    adresatMenager.dodajAdresata();
+    adresatMenager.wyszukajAdresatowPoNazwisku();
     return 0;
 
 }
 
- 
 
 char wybierzOpcjeZMenuGlownego()
 {
