@@ -19,12 +19,11 @@ int main() {
    
     
  
-    int idZalogowanegoUzytkownika = 0;
-    //ksiazkaAdresowa.wypiszWszystkich();
+   
     char wybor;
     while (true)
     {
-        if (idZalogowanegoUzytkownika == 0)
+        if (ksiazkaAdresowa.czyUzytkownikJestZalogowany() == false)
         {
             wybor = wybierzOpcjeZMenuGlownego();
 
@@ -34,7 +33,7 @@ int main() {
                 ksiazkaAdresowa.rejestracja();
                 break;
             case '2':
-                idZalogowanegoUzytkownika = ksiazkaAdresowa.logowanieUzytkownika(); 
+                ksiazkaAdresowa.logowanieUzytkownika();
                 break;
             case '9':
                 exit(0);
@@ -81,8 +80,8 @@ int main() {
                     ksiazkaAdresowa.zmianaHaslaZalogowanegoUzytkownika(); // nie dziala u"czysci plik z uzytkownicy.txt"
                 break;
             case '8':
-                idZalogowanegoUzytkownika = 0;
-        //        adresaci.clear();
+                    ksiazkaAdresowa.wylogowywanieUzytkownika();
+                    idZalogowanegoUzytkownika = 0;
                 break;
             }
         }
@@ -93,6 +92,20 @@ int main() {
     return 0;
 }
 
+/*
+#include "AdresatMenager.hpp"
+int main ()
+{
+    
+    AdresatMenager adresatMenager("Adresaci.txt", 1);
+    adresatMenager.dodajAdresata();
+    adresatMenager.wyswietlWszystkichAdresatow();
+
+    return 0;
+
+}
+*/
+ 
 
 char wybierzOpcjeZMenuGlownego()
 {

@@ -8,7 +8,7 @@
 
 #include "AdresatMenager.hpp"
 
-int AdresatMenager::dodajAdresata()
+void AdresatMenager::dodajAdresata()
 {   
     Adresat adresat;
 
@@ -19,7 +19,6 @@ int AdresatMenager::dodajAdresata()
     adresaci.push_back(adresat);
     plikZAdresatami.dopiszAdresataDoPliku(adresat);     
 
-    return ++idOstatniegoAdresata;
 }
 
 Adresat AdresatMenager::podajDaneNowegoAdresata()
@@ -27,8 +26,8 @@ Adresat AdresatMenager::podajDaneNowegoAdresata()
     Adresat adresat;
     MetodyPomocnicze metodyPomocnicze;
     
-    adresat.ustawIdAdresata(plikZAdresatami.pobierzIdOstatniegoAdresata() +1);
-    adresat.ustawIdUzytkownika(idZalogowanegoUzytkownika);
+    adresat.ustawIdAdresata((plikZAdresatami.pobierzIdOstatniegoAdresata() +1));
+    adresat.ustawIdUzytkownika(ID_ZALOGOWANEGO_UZYTKOWNIKA);
 
     cout << "Podaj imie: ";
     adresat.ustawImie(metodyPomocnicze.wczytajLinie());
@@ -48,10 +47,6 @@ Adresat AdresatMenager::podajDaneNowegoAdresata()
     adresat.ustawAdres(metodyPomocnicze.wczytajLinie());
 
     return adresat;
-}
-void AdresatMenager::wczytajAdresatowZalogowanegoUzytkownikaZPliku()
-{
-    adresaci = plikZAdresatami.wczytajAdresatowZalogowanegoUzytkownikaZPliku(idZalogowanegoUzytkownika);
 }
 
 

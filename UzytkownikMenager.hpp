@@ -30,18 +30,22 @@ class UzytkownikMenager
     Uzytkownik podajDaneNowegoUzytkownika();
     int pobierzIdNowegoUzytkownika();
     bool czyIstniejeLogin(string login);
-    PlikZUzytkownikami plikZUzytkownikami;  
+    PlikZUzytkownikami plikZUzytkownikami;
+    int idZalogowanegoUzytkownika;
 
 public:
-    UzytkownikMenager (string nazwaPlikuZUzytkownikami) : plikZUzytkownikami(nazwaPlikuZUzytkownikami){};
-     int idZalogowanegoUzytkownika;
+    UzytkownikMenager (string nazwaPlikuZUzytkownikami) : plikZUzytkownikami(nazwaPlikuZUzytkownikami){
+        idZalogowanegoUzytkownika = 0;
+        uzytkownicy = plikZUzytkownikami.wczytajUzytkownikowZPliku();
+       
+    };
+     
     void rejestracjaUzytkownika();
-    void wczytajUzytkownikowZPliku();
-    void wypiszWszystkichUzytkownikow();
     int logowanieUzytkownika();
     string wczytajLinie();
     void zmianaHaslaZalogowanegoUzytkownika();
+    bool czyUzytkownikJestZalogowany();
+    void wylogowywanieUzytkownika();
     int pobierzIdZalogowanegoUzytkownika();
-    
 };
 #endif /* UzytkownikMenager_hpp */

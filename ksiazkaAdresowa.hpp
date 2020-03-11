@@ -17,21 +17,25 @@ using namespace std;
 class KsiazkaAdresowa
 {
     UzytkownikMenager uzytkownikMenager;
-    AdresatMenager adresatMenager;
-    //string nazwaPlikuZAdresatami;
+    AdresatMenager *adresatMenager;
+    const string NAZWA_PLIKU_Z_ADRESATAMI;
 public:
-    
-    
-    KsiazkaAdresowa(string nazwaPlikuZUzytkownikami, string NAZWAPLIKUZADRESATAMI) : uzytkownikMenager(nazwaPlikuZUzytkownikami), adresatMenager(NAZWAPLIKUZADRESATAMI) {
-        uzytkownikMenager.wczytajUzytkownikowZPliku();
-        adresatMenager.wczytajAdresatowZalogowanegoUzytkownikaZPliku();
+    KsiazkaAdresowa(string nazwaPlikuZUzytkownikami, string nazwaPlikuZAdresatami) : uzytkownikMenager(nazwaPlikuZUzytkownikami), NAZWA_PLIKU_Z_ADRESATAMI(nazwaPlikuZAdresatami)
+    {
+        adresatMenager = NULL;
     };
-    void rejestracja();
-    int logowanieUzytkownika();
-    void zmianaHaslaZalogowanegoUzytkownika();
-    void wypiszWszystkich();
-    void wyswietlWszystkichAdresatow();
+    ~KsiazkaAdresowa()
+    {
+        delete adresatMenager;
+        adresatMenager = NULL;
+    };
     
+    bool czyUzytkownikJestZalogowany();
+    void rejestracja();
+    void logowanieUzytkownika();
+    void zmianaHaslaZalogowanegoUzytkownika();
+    void wyswietlWszystkichAdresatow();
+    void wylogowywanieUzytkownika();
     void dodajAdresata();
 };
 #endif /* ksiazkaAdresowa_hpp */
