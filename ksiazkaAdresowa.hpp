@@ -39,5 +39,6 @@ public:
     void dodajAdresata();
     void wyszukajAdresatowPoImieniu();
     void wyszukajAdresatowPoNazwisku();
+    void edytujAdresata();
 };
 #endif /* ksiazkaAdresowa_hpp */

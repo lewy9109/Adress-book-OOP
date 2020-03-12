@@ -28,14 +28,12 @@ void KsiazkaAdresowa::zmianaHaslaZalogowanegoUzytkownika()
 {   
     uzytkownikMenager.zmianaHaslaZalogowanegoUzytkownika();
 }
-
 void KsiazkaAdresowa::wylogowywanieUzytkownika()
 {
     uzytkownikMenager.wylogowywanieUzytkownika();
     delete adresatMenager;
     adresatMenager = NULL;
 }
-
 void KsiazkaAdresowa::dodajAdresata()
 {
     adresatMenager -> dodajAdresata();
@@ -52,6 +50,11 @@ void KsiazkaAdresowa::wyszukajAdresatowPoNazwisku()
 {
     adresatMenager -> wyszukajAdresatowPoNazwisku();
 }
+void KsiazkaAdresowa::edytujAdresata()
+{
+    adresatMenager -> edytujAdresata();
+}
+
 
 
 
