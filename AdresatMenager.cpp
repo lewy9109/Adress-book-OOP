@@ -220,6 +220,7 @@ void AdresatMenager::edytujAdresata()
         cout << endl << "Nie ma takiego adresata." << endl << endl;
     }
     system("pause");
+    usleep(3000000);
 }
 int AdresatMenager::podajIdWybranegoAdresata()
 {
@@ -229,13 +230,12 @@ int AdresatMenager::podajIdWybranegoAdresata()
     idWybranegoAdresata  =  metodyPomocnicze.wczytajLiczbeCalkowita();
     return idWybranegoAdresata;
 }
-void AdresatMenager::zaktualizujDaneWybranegoAdresata(Adresat adresat, int idEdytowanegoAdresata)
+void AdresatMenager::zaktualizujDaneWybranegoAdresata(Adresat adresat, int idEdytowanegoAdresata)   
 {
     int numerLiniiEdytowanegoAdresata = 0;
     string liniaZDanymiAdresata = "";
     
-    
-    numerLiniiEdytowanegoAdresata = plikZAdresatami.zwrocNumerLiniiSzukanegoAdresata(idEdytowanegoAdresata);
+    numerLiniiEdytowanegoAdresata = plikZAdresatami.zwrocNumerLiniiSzukanegoAdresata(idEdytowanegoAdresata);    
     liniaZDanymiAdresata = plikZAdresatami.zamienDaneAdresataNaLinieZDanymiOddzielonymiPionowymiKreskami(adresat);
     plikZAdresatami.edytujWybranaLinieWPliku(numerLiniiEdytowanegoAdresata, liniaZDanymiAdresata);
 
@@ -261,3 +261,50 @@ char AdresatMenager::wybierzOpcjeZMenuEdycja()
 
     return wybor;
 }
+
+int AdresatMenager::usunAdresata()
+{
+    int idUsuwanegoAdresata = 0;
+    int numerLiniiUsuwanegoAdresata = 0;
+    MetodyPomocnicze metodyPomocnicze;
+    system("cls");
+    cout << ">>> USUWANIE WYBRANEGO ADRESATA <<<" << endl << endl;
+    idUsuwanegoAdresata = podajIdWybranegoAdresata();
+
+    char znak;
+    bool czyIstniejeAdresat = false;
+
+    for (vector <Adresat>::iterator itr = adresaci.begin(); itr != adresaci.end(); itr++)
+    {
+        if (itr -> pobierzIdAdresata() == idUsuwanegoAdresata)
+        {
+            czyIstniejeAdresat = true;
+            cout << endl << "Potwierdz naciskajac klawisz 't': ";
+            znak = metodyPomocnicze.wczytajZnak();
+            if (znak == 't')
+            {
+                numerLiniiUsuwanegoAdresata = plikZAdresatami.zwrocNumerLiniiSzukanegoAdresata(idUsuwanegoAdresata);
+                plikZAdresatami.usunWybranaLinieWPliku(numerLiniiUsuwanegoAdresata);
+                adresaci.erase(itr);
+                cout << endl << endl << "Szukany adresat zostal USUNIETY" << endl << endl;
+                system("pause");
+                usleep(3000000);
+                return idUsuwanegoAdresata;
+            }
+            else
+            {
+                cout << endl << endl << "Wybrany adresat NIE zostal usuniety" << endl << endl;
+                system("p       ause");
+                return 0;
+            }
+        }
+    }
+    if (czyIstniejeAdresat == false)
+    {
+        cout << endl << "Nie ma takiego adresata w ksiazce adresowej" << endl << endl;
+        system("pause");
+        usleep(3000000);
+    }
+    return 0;
+}
+

@@ -15,23 +15,19 @@
 #include "MetodyPomocnicze.hpp"
 #include "PlikZAdresatami.hpp"
 using namespace std;
-class AdresatMenager
+class AdresatMenager    
 {
     vector <Adresat> adresaci;
     const int ID_ZALOGOWANEGO_UZYTKOWNIKA;
-    //int idOstatniegoAdresata;
     Adresat podajDaneNowegoAdresata();
     PlikZAdresatami plikZAdresatami;
     void wyswietlDaneAdresata(Adresat adresat);
-    
     void wyswietlIloscWyszukanychAdresatow(int iloscAdresatow);
     int podajIdWybranegoAdresata();
     char wybierzOpcjeZMenuEdycja();
     void zaktualizujDaneWybranegoAdresata(Adresat adresat, int idEdytowanegoAdresata);
-
-
-   
     
+
 public:
     AdresatMenager (string nazwaPlikuZAdresatami, int idZalogowanegoUzytkownika) : plikZAdresatami(nazwaPlikuZAdresatami), ID_ZALOGOWANEGO_UZYTKOWNIKA(idZalogowanegoUzytkownika)
     {
@@ -42,6 +38,7 @@ public:
     void wyszukajAdresatowPoImieniu();
     void wyszukajAdresatowPoNazwisku();
     void edytujAdresata();
+    int usunAdresata();
 
 
     

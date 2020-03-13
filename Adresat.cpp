@@ -42,7 +42,7 @@ void Adresat::ustawAdres (string nowyAdres)
 
 int Adresat::pobierzIdAdresata ()
 {
-    return idAdresata;
+    return idAdresata;  
 }
 
 int Adresat::pobierzIdUzytkownika ()

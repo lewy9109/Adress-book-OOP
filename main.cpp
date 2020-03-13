@@ -17,9 +17,6 @@ int main() {
  
     KsiazkaAdresowa ksiazkaAdresowa ("Uzytkownicy.txt", "Adresaci.txt");
    
-    
- 
-   
     char wybor;
     while (true)
     {
@@ -46,7 +43,6 @@ int main() {
         }
         else
         {
-
             wybor = wybierzOpcjeZMenuUzytkownika();
 
             switch (wybor)
@@ -64,8 +60,7 @@ int main() {
                 ksiazkaAdresowa.wyswietlWszystkichAdresatow();
                 break;
             case '5':
-         //       idUsunietegoAdresata = usunAdresata(adresaci);
-         //       idOstatniegoAdresata = podajIdOstatniegoAdresataPoUsunieciuWybranegoAdresata(idUsunietegoAdresata, idOstatniegoAdresata);
+                ksiazkaAdresowa.usunAdresata();
                 break;
             case '6':
                 ksiazkaAdresowa.edytujAdresata();
@@ -78,8 +73,6 @@ int main() {
                 break;
             }
         }
-    
-    
     }
      
     return 0;

@@ -54,6 +54,10 @@ void KsiazkaAdresowa::edytujAdresata()
 {
     adresatMenager -> edytujAdresata();
 }
+void KsiazkaAdresowa::usunAdresata()
+{   
+    adresatMenager -> usunAdresata();
+}
 
 
 
